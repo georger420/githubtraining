@@ -48,9 +48,7 @@ Program **chalupy.p.txt** draws a tree which consists of simple cottages:
 References:
 
 [1] N.Wirth: Algoritmy a štruktúry údajov. ALFA, 1988
+
 [2] RNDr. J. Němec: LOGOHRÁTKY, ELEKTRONIKA 8/89.
+
 [3] RNDr. J. Němec: LOGOHRÁTKY, ELEKTRONIKA 1/89.
-
-
-
-
