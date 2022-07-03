@@ -1,0 +1,121 @@
+PROGRAM SIERP;
+
+CONST N=4;H0=1024;XP=96;YP=32;
+VAR I,H,X,X0,Y,Y0:INTEGER;
+    POSX,POSY:REAL;
+
+#I D8:XY4150.I
+
+PROCEDURE B(I:INTEGER);FORWARD;
+PROCEDURE C(I:INTEGER);FORWARD;
+PROCEDURE D(I:INTEGER);FORWARD;
+
+PROCEDURE A(I:INTEGER);
+BEGIN 
+IF I>0 THEN
+ BEGIN
+ A(I-1);
+ X:=X+H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ B(I-1);
+ X:=X+2*H;
+ MA(X+XP,Y+YP);
+ D(I-1);
+ X:=X+H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+ A(I-1)
+ END
+END;
+
+PROCEDURE B;
+BEGIN 
+IF I>0 THEN
+ BEGIN 
+ B(I-1);
+ X:=X-H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ C(I-1);
+ Y:=Y-2*H;
+ MA(X+XP,Y+YP);
+ A(I-1);
+ X:=X+H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ B(I-1)
+ END
+END;
+
+PROCEDURE C;
+BEGIN 
+IF I>0 THEN
+ BEGIN 
+ C(I-1);
+ X:=X-H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+ D(I-1);
+ X:=X-2*H;
+ MA(X+XP,Y+YP);
+ B(I-1);
+ X:=X-H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ C(I-1)
+ END
+END;
+
+PROCEDURE D;
+BEGIN 
+IF I>0 THEN
+ BEGIN 
+ D(I-1);
+ X:=X+H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+ A(I-1);
+ Y:=Y+2*H;
+ MA(X+XP,Y+YP);
+ C(I-1);
+ X:=X-H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+ D(I-1);
+ END
+END;
+
+BEGIN
+INIT;PENUP;
+I:=0;
+H:=H0 DIV 4;
+X0:=2*H;
+Y0:=3*H;
+REPEAT
+ I:=I+1;
+ X0:=X0-H;
+ H:=H DIV 2;
+ Y0:=Y0+H;
+ X:=X0;
+ Y:=Y0;
+ PENUP;MA(X+XP,Y+YP);PENDOWN;
+ A(I);
+ X:=X+H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ B(I);
+ X:=X-H;
+ Y:=Y-H;
+ MA(X+XP,Y+YP);
+ C(I);
+ X:=X-H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+ D(I);
+ X:=X+H;
+ Y:=Y+H;
+ MA(X+XP,Y+YP);
+UNTIL I=N;
+PENUP;
+END.
