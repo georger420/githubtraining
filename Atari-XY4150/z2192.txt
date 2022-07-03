@@ -1,0 +1,121 @@
+"
+ZE ZÁPISNÍKU PROGRAMÁTORA
+
+
+KYAN PASCAL a XY4150  (1)
+=========================
+
+     O KYAN PASCALu, kterı je hned po TURBO PASCALu nejlepší plnohodnotnou implementací jazyka PASCAL na osmibitovıch poèítaèích, jsme dosud na stránkách našich zpravodajù nepsali. Stejnì tak jsme se dosud nevìnovali zapisovaèi XY4150 z Laboratorních pøístrojù. Tento pøíspìvek pojednává o obojím. Je rozdìlen do dvou èástí. První je vìnována podprogramùm pro obsluhu zapisovaèe. Druhá èást bude vìnována pouití tìchto podprogramù k vykreslení zajímavıch køivek a obrázkù, a bude uvedena v pøíštím èísle zpravodaje.
+
+     Úplnì na zaèátek však vysvìtlení, proè pouívat KYAN PASCAL, kterı zapisovaè obslouit neumí, kdy k zapisovaèi ji obsluné programy existují. Je zde jednak originální programové vybavení vırobce - TOS 4.1 s handlerem pro zapisovaè, a dále nesrovnatelnì lepší handler zabudovanı v TURBOBASICu XL a uveøejnìnı v /2/. V obou pøípadech se pøedpokládá pouití zapisovaèe s jazykem BASIC, kterı však má podstatnou nevıhodu. Neumoòuje toti rekurzívní volání podprogramù (volání podprogramu sebou samım) a s tím spojené pøedávání parametrù, které dává monost psát urèité druhy programù velice jednoduché a krátké. PASCAL mimo mnoha dalších vıhod umoòuje i to. Všechny programy, které budou popsány ve druhé èásti èlánku, rekurzívní volání podprogramù pouívají.
+
+Popis propojení
+---------------
+
+     Jak u nás bylo v døívìjších dobách ""dobrım"" zvykem, byl na trh uveden nejdøíve pøístroj a teprve za nìjakı èas propojovací kabely a programové vybavení. Tím došlo, stejnì jako v pøípadì ""tiskárny"" BT 100, k tomu, e se ustálilo více zpùsobù propojení zapisovaèe s ATARI. My pouijeme propojení, které bylo uveøejnìno v /2/. Pro jistotu jej uvádíme:
+
+
+Signál    Konektor zapisovaèe    Joy-port 1    Joy-port 2
+
+ PEN              1                   1              -
+ MOV              2                   2              -
+ X/Y              3                   3              -
+ +/-              4                   4              -
+ READY            5                   -             1,6
+ Zem              6                   8              -
+ Neobsazeno       7                   -              -
+
+
+     Od originálních propojovacích kabelù se liší prohozením vodièù na 2. a 4. pinu joy-portu 1.
+
+Vıznam signálù
+
+     1. PEN   - vstup  - L ... pero nahoøe
+                         H ... pero dole
+     2. MOV   - vstup  - po pøíchodu nábìné hrany posune jeden
+                         z motorkù polohu pera vzhledem k papí-
+                         ru o 0.1 mm.
+     3. X/Y   - vstup  - L ... posun vozíku,
+                         H ... posun papíru.
+     4. +/-   - vstup  - L ... vozík vlevo nebo papír vpøed.
+                         H ... vozík vpravo nebo papír vzad,
+     5. READY - vıstup - L ... pøipraven,
+                         H ... nepøipraven.
+
+Signál READY není pro provoz zapisovaèe nezbytnì nutnı a proto nebude vyuit.
+
+Programová obsluha
+------------------
+
+     Obsluné programy zapisovaèe musí umonit tøi èinnosti:
+
+- inicializaci zapisovaèe,                
+- zvedání a spouštìní pera,               
+- propojení dvou libovolnıch bodù pøímkou.
+
+     Na konci èlánku je uveden zdrojovı text všech obslunıch procedur. Jejich øešení je kompromisem mezi ""èistım"" PASCALem bez pouití assembleru a naopak èistım assemblerovım programem, kterı by byl PASCALem pouze volán. V prvním pøípadì by bylo psaní programu jednoduché, ale zapisovaè by pracoval velmi pomalu. Ve druhém pøípadì by program pracoval rychle, ale byl by dost sloitı, málo èitelnı a nevyuíval by vıhody KYAN PASCALU. Proto jsou základní procedury ovládající pøímo joy-porty ""strojové"" a ostatní ji ""pascalské"".
+     Strojové podprogramy nastavují do pøíslušnıch stavù jednotlivé bity joy-portù. A na rutinu KROK jsou veškeré bitové operace provádìny se stínovım registrem BAJT, kterı je poté kopírován na port.
+     Pascalské procedury pracují se tøemi globálními promìnnımi typu REAL: POSX a POSY obsahují aktuální souøadnice pera, UHEL obsahuje aktuální azimut pohybu pera a je vyuívána nadstavbovımi procedurami elví grafiky.
+
+Popis jednotlivıch procedur
+
+     - PROCEDURE ZAKLAD je ""krycí"" procedura, která není PASCALem vùbec volána a pouze v sobì ukrıvá strojové podprogramy, které jsou volány z jinıch procedur.
+       KROK vytváøí signál MOVE nastavením 2. bitu portu nejdøíve z L do H a poté opìt do L. Tím vzniká krátkı impuls, kterı v závislosti na nastavení ostatních bitù portu spouští pohyb jednoho z motorkù o jeden krok.
+       PAUZA2 je prodleva po spuštìní èi zvednutí pera. Prodleva je nutná kvùli setrvaènosti pera a zajišuje, e se pero vùèi papíru nezaène pohybovat døíve, ne bude zvednuto èi spuštìno.
+       VODOR nastavuje signál X/Y do L.
+       VERT nastavuje signál X/Y do H.
+       VLENA nastavuje signál +/- do L.
+       VPRDOL signál +/- nastavuje do H.
+     - PROCEDURE OPENXY - uvádí joy-porty do stavu vıstup.
+     - PROCEDURE CLOSEXY - nastavuje joyporty do stavu jako po RESET, tj. do stavu vstup.
+     - PROCEDURE PU - zvedá pero. Nastavuje signál PEN do L.
+     - PROCEDURE PD - spouští pero nastavením signálu PEN do H.
+     - PROCEDURY VPRED, VZAD, VLEVO a VPRAVO zpùsobují pohyb vozíku èi papíru o jeden krok v pøíslušném smìru. Zároveò aktualizují promìnné POSX a POSY.
+     - PROCEDURE MR(DX,DY) je stìejní procedura obslunıch podprogramù. Propojí stávajíci pozici pera s bodem zadanım relativními souøadnicemi (x-ová a y-ová vzdálenost nového bodu od stávající pozice) pøímkou. Ke své práci vyuívá v sobì deklarované pomocné procedury POM1 a POM2 a vnì umístìné procedury HORIZ(DXX) a SVISLE(DYY). Poslednì jmenované rozhodují o smìru pohybu vozíku èi papíru v závislosti na znaménku parametrù DXX a DYY. Procedury POM1 a POM2 realizují tzv. Bresenhamùv algoritmus aproximace pøímky viz /4/ (pøímka jiného ne vodorovného nebo svislého smìru je ""schodovitá"", sloená ze svislıch a vodorovnıch úsekù). POM1 pracuje, je-li svislá vzdálenost nového bodu vìtší ne vodorovná. POM2 pracuje v ostatních pøípadech.
+     - PROCEDURE CS provádí inicializaci zapisovaèe. Nastaví joy-porty na vıstup, zvedne pero a pøemístí jej do levé krajní polohy, èím zajistí pro bezchybnou práci zapisovaèe nutnı stisk levého koncového spínaèe vozíku. Potom pero pøemístí doprostøed papíru (pøedpokládá formát A4) a inicializuje promìnné POSX, POSY a UHEL.
+
+     To jsou všechny nezbytnì nutné procedury pro obsluhu zapisovaèe.
+
+elví grafika
+-------------
+
+     Termín ""elví grafika"" znají všichni uivatelé jazyka LOGO. Jedná se o soubor pøíkazù, kterımi se øídí pohyb elvy po obrazovce, je pøi svém pohybu zároveò kreslí. Soubor tìchto pøíkazù je vhodnım doplòkem obslunıch podprogramù, kterı umoní relativnì pohodlné ovládání zapisovaèe. A také umoní témìø beze zmìn pøebírat programy v jazyce LOGO, pøesnìji ty programy, které pouívají pouze pøíkazy elví grafiky, vèetnì rekurzívního volání procedur.
+
+     Do souboru pøíkazù elví grafiky patøí ji popsané procedury PU, PD a CS. Další pøíkazy jsou realizovány tìmito procedurami:
+
+     PROCEDURE SETPOS(XX,YY) pøemístí pero po pøímkové dráze do bodu zadaného souøadnicemi XX a YY absolutními vùèi støedu papíru.
+     PROCEDURE HOME pøemístí pero z kterékoliv pozice do støedu papíru o souøadnicích 0,0.
+     PROCEDURE FD(DALKA) posune pero ve smìru aktuálnì nastaveného azimutu o vzdalenost DALKA.
+     PROCEDURE BK(DALKA) pracuje jako FD avšak v opaèném smìru.
+     FUNCTION DEGRAD(ALFA) prevadi uhel ve stupnich na uhel v radianech.
+     FUNCTION RADDEG(ALFA) prevadi uhel v radianech na uhel ve stupních.
+     FUNCTION HEADING vrací aktuální azimut ve stupních.
+     PROCEDURE SETH(ALFA) nastavuje azimut na hodnotu ALFA (ve stupních).
+     PROCEDURE LT(ALFA) zmenší azimut o ALFA stupòù.
+     PROCEDURE RT(ALFA) zvıší azimut o ALFA stupòù.
+
+     To jsou tedy všechny procedury elví grafiky. Schází ještì monost psaní textu. Tu však musíme oelet. Data definující tvar znakù by byla pro KYAN PASCAL pøíliš rozsáhlá.
+
+Poznámky k pouití
+
+     Vıpis všech procedur je na konci tohoto èlánku. Pøepište jej pomocí editoru do poèítaèe a peèlivì zkontrolujte! Mnohdy záleí na kadém støedníku. Je-li text bez chyby ulote jej na záznamové medium pod názvem ""ZELVAXY.I"". Do vašich vlastních programù pak tento soubor vøadíte pøíkazem INCLUDE (#I D8:ZELVAXY.I). Nemáte-li ramdisk ani disketovou jednotku, musíte soubor ZELVAXY.I pøihrát pøímo do zdrojového textu vašeho programu pøíkazem I editoru.
+     Ve vašem pascalském programu musí bıt deklarováno:
+
+     CONST PI=3.14159;
+     VAR POSX,POSY,UHEL:REAL;
+
+No a to je v této èásti všechno. Pøíštì si popíšeme nìkolik zajímavıch programù s jejich pomocí si budete moci nakreslit zapisovaèem pozoruhodné obrázky.
+
+å-js-
+
+Literatura:
+
+/1/ XY4150 - Technická dokumentace.
+/2/ FLOP è.4 - disketovı zpravodaj.
+/3/ KYAN PASCAL for the ATARI - USERS MANUAL.
+/4/ D.F.Rogers: Procedural Elements for Computer Graphics. (ruskı pøeklad Algoritmièeskije osnovy mašinoj grafiky).
+/5/ Sedláèek, Fridrich: LOGO pro dìti i dospìlé. Pøíloha è. 9 zpravodaje AK Praha.
+
+Vıpis zdrojového textu obslunıch podprogramù:
+
+"
