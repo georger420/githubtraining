@@ -1,7 +1,7 @@
 <<<<<<< HEAD
 ### HUMPLO
 
-There were many graphic application for 8 bit ATARI XL/XE, producing bitmap pictures. But most probably there was the only one or at least one from very few was creating vector graphics. It was **Humble Desing**. It' description - in Czech - is here <http://www.atari8.cz/calp/data/pha_hud/index.php?c=3> . Certain program can be downloaded from these site <http://www.atari.turiecfoto.sk/soft/humble-design-v1.31.zip>. **Humble Design** could plot only on plotters "ALGIGRAF" and "MINIGRAF". 
+There were many graphic application for 8 bit ATARI XL/XE, producing bitmap pictures. But most probably there was the only one or at least one from very few creating vector graphics. It was **Humble Desing**. It' description - in Czech - is here <http://www.atari8.cz/calp/data/pha_hud/index.php?c=3> . Certain program can be downloaded from these site <http://www.atari.turiecfoto.sk/soft/humble-design-v1.31.zip>. **Humble Design** could plot only on plotters "ALGIGRAF" and "MINIGRAF". 
 
 ![HUMBLE DESIGN](HumbleDesign.png)
 
@@ -50,14 +50,3 @@ Listing of program HUMPLO is in **humplo22.tbl.txt**. Because there are used spe
 
 Files with ".hd" extension are pictures created and saved by Humble Design.
 
-
-
-
-
-
-
-
-
-
-
->>>>>>> eec155b7591547522264c508d4446a5a801d516e
