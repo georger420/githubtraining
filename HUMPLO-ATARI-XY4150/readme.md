@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ### HUMPLO
 
 There were many graphic application for 8 bit ATARI XL/XE, producing bitmap pictures. But most probably there was the only one or at least one from very few creating vector graphics. It was **Humble Desing**. It' description - in Czech - is here <http://www.atari8.cz/calp/data/pha_hud/index.php?c=3> . Certain program can be downloaded from these site <http://www.atari.turiecfoto.sk/soft/humble-design-v1.31.zip>. **Humble Design** could plot only on plotters "ALGIGRAF" and "MINIGRAF". 
