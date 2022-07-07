@@ -1,6 +1,6 @@
 ### HUMPLO
 
-There were many graphic application for 8 bit ATARI XL/XE, producing bitmap pictures. But most probably there was the only one or at least one from very few was creating vector graphics. It was **Humble Desing**. It' description - in Czech - is here <http://www.atari8.cz/calp/data/pha_hud/index.php?c=3> . Certain program can be downloaded from these site <http://www.atari.turiecfoto.sk/soft/humble-design-v1.31.zip>. **Humble Design** could plot only on plotters "ALGIGRAF" and "MINIGRAF". 
+There were many graphic application for 8 bit ATARI XL/XE, producing bitmap pictures. But most probably there was the only one or at least one from very few was creating vector graphics. It was **Humble Desing**. It' description - in Czech - is here <http://www.atari8.cz/calp/data/pha_hud/index.php?c=3> . Certain program can be downloaded from this site <http://www.atari.turiecfoto.sk/soft/humble-design-v1.31.zip>. **Humble Design** could plot only on plotters "ALGIGRAF" and "MINIGRAF". 
 
 ![HUMBLE DESIGN](HumbleDesign.png)
 
@@ -15,7 +15,9 @@ Following pictures were created in Humble Design and then displayed by program H
 
 ![HUMBLE DESIGN](robotron.png)
 
-Listing of program HUMPLO is in **humplo22.tbl.txt**. Because there are used special Atari characters with codes <= 31, you can use file **HUMPLO22.BAS**, which can be loaded directly into TurboBasic. 
+Listing of program HUMPLO is in **humplo22.tbl.txt**. Because there are used special Atari characters with codes <= 31, you can use file **HUMPLO22.BAS**, which can be loaded directly into TurboBasic.
+
+Files with ".hd" extension are pictures created and saved by Humble Design.
 
 
 
