@@ -8,7 +8,7 @@ H0min=2 (3 + N)
 
 where N is the order of curve, and must be divisible by 2. Due to step of plotter – 0.1 mm is H0 = 1024 in program to receive enough large drawing.
 
-Hilbetrt’s curves 1., 2. and 3. order:
+Hilbert’s curves 1., 2. and 3. order:
 
 ![](hilbxy2.gif)
 
